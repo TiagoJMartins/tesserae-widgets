@@ -18,8 +18,8 @@
       "folders": ["signals_core", "signals_stat"],
       "release": {
         "version": "0.1.0",
-        "tarball_url": "https://github.com/TiagoJMartins/tesserae-widget-signals/archive/refs/tags/v0.1.0.tar.gz",
-        "sha256": "9bcd859a14c47af3f97808ab01bb1670c3fc307ce92cc1b6313c3fd60bf11bf7"
+        "tarball_url": "https://github.com/TiagoJMartins/tesserae-widget-signals/releases/download/v0.1.0/signals-0.1.0.tar.gz",
+        "sha256": "d4026221657b057bd4d19376465bd41caa81ae6c0dc5033f7dc70869cdd3e92f"
       },
       "source": "https://github.com/TiagoJMartins/tesserae-widget-signals"
     }

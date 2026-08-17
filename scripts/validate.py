@@ -33,20 +33,52 @@ TIMEOUT_S = 30
 
 def detect_layout(buf: bytes, primary_id: str) -> list[str]:
     """Mirror ``_detect_layout``: unwrap one GitHub-style envelope, then either
-    single-widget (``plugin.json`` at the root) or bundle (subfolders that each
-    hold one)."""
+    single-widget (``plugin.json`` at the root) or bundle (every top-level
+    directory holds one).
+
+    A directory without ``plugin.json`` is a hard refusal on the host, not a
+    folder it quietly skips - which is what makes a source archive unusable as a
+    bundle, since it carries the repo's tooling directories too. Raise the same
+    way here so the mistake surfaces before an install does."""
     with tarfile.open(fileobj=io.BytesIO(buf), mode="r:*") as tar:
-        names = [m.name for m in tar.getmembers() if not m.isdir()]
-    top = sorted({n.split("/", 1)[0] for n in names if "/" in n})
-    prefix = f"{top[0]}/" if len(top) == 1 and all("/" in n for n in names) else ""
-    stripped = [n[len(prefix) :] for n in names]
-    if "plugin.json" in stripped:
+        files = {m.name for m in tar.getmembers() if not m.isdir()}
+        dir_members = {m.name.rstrip("/") for m in tar.getmembers() if m.isdir()}
+
+    def children(prefix: str) -> tuple[set[str], set[str]]:
+        """``(dir_names, file_names)`` one level under ``prefix``."""
+        dirs = {
+            name[len(prefix) :].partition("/")[0]
+            for name in files | dir_members
+            if name.startswith(prefix) and "/" in name[len(prefix) :]
+        }
+        dirs |= {
+            name[len(prefix) :]
+            for name in dir_members
+            if name.startswith(prefix) and "/" not in name[len(prefix) :]
+        }
+        plain = {
+            name[len(prefix) :]
+            for name in files
+            if name.startswith(prefix) and "/" not in name[len(prefix) :]
+        }
+        return dirs, plain - dirs
+
+    root = ""
+    dirs, plain = children(root)
+    if f"{root}plugin.json" not in files and len(dirs) == 1 and not plain:
+        root = f"{next(iter(dirs))}/"
+        dirs, plain = children(root)
+    if f"{root}plugin.json" in files:
         return [primary_id]
-    return sorted(
-        n.split("/", 1)[0]
-        for n in stripped
-        if n.endswith("/plugin.json") and n.count("/") == 1
-    )
+    if not dirs:
+        raise ValueError("no plugin.json at the root, in one wrapping folder, or in a subfolder")
+    for name in sorted(dirs):
+        if f"{root}{name}/plugin.json" not in files:
+            raise ValueError(
+                f"bundle subfolder {name!r} has no plugin.json - the host refuses the whole "
+                "install, so a source archive with tooling directories cannot be a bundle"
+            )
+    return sorted(dirs)
 
 
 def check_screenshots(entry: dict, failures: list[str]) -> None:
@@ -82,7 +114,10 @@ def check_release(entry: dict, failures: list[str]) -> None:
         declared = sorted(entry["folders"])
         try:
             found = detect_layout(body, wid)
-        except Exception as err:  # noqa: BLE001
+        except ValueError as err:
+            failures.append(f"{wid}: the host would refuse this tarball: {err}")
+            return
+        except Exception as err:  # noqa: BLE001 - a malformed archive is one failure line
             failures.append(f"{wid}: could not read tarball: {err}")
             return
         if declared != found:
