@@ -1,0 +1,19 @@
+[tools]
+uv = "latest"
+python = "3.12"
+
+[tasks.validate]
+description = "Validate widgets.json: schema, screenshots, tarball hashes, declared folders"
+raw = true
+usage = '''
+flag "--offline" help="Skip tarball fetch + hash checks"
+'''
+run = "uv run --with jsonschema python scripts/validate.py ${usage_offline:+--offline}"
+
+[tasks.hash]
+description = "sha256 of a release tarball, for an entry's release.sha256"
+raw = true
+usage = '''
+arg "<url>" help="Tarball URL, e.g. https://github.com/<owner>/<repo>/archive/refs/tags/v0.1.0.tar.gz"
+'''
+run = 'curl -sSL --fail "$usage_url" | shasum -a 256 | cut -d" " -f1'
