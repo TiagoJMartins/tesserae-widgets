@@ -4,24 +4,65 @@
     {
       "id": "signals",
       "name": "Signals",
-      "description": "Push labelled state to a panel from a Shortcut, a shell script or a Home Assistant automation. Bundles the generic personal-data source with a value / beacon widget that reads it. No network access, and a publisher that goes quiet reads as stale, not OFF.",
+      "description": "Push labelled state to a panel from a Shortcut, a shell script or a Home Assistant automation. Each signal owns its own slot, so one paired credential serves every device. No network access, and a publisher that goes quiet reads as stale, not OFF.",
       "icon": "ph-broadcast",
       "author": {
         "name": "Tiago Martins",
         "github": "TiagoJMartins"
       },
-      "tags": ["utility"],
+      "tags": [
+        "utility"
+      ],
       "kind": "widget",
       "tesserae_compat": "1.x",
-      "screenshot_sizes": ["lg", "md", "sm", "xs"],
+      "screenshot_sizes": [
+        "lg",
+        "md",
+        "sm",
+        "xs"
+      ],
       "extra_screenshot_count": 2,
-      "folders": ["signals_core", "signals_stat"],
+      "folders": [
+        "signals_core",
+        "signals_stat"
+      ],
       "release": {
-        "version": "0.1.0",
-        "tarball_url": "https://github.com/TiagoJMartins/tesserae-widget-signals/releases/download/v0.1.0/signals-0.1.0.tar.gz",
-        "sha256": "d4026221657b057bd4d19376465bd41caa81ae6c0dc5033f7dc70869cdd3e92f"
+        "version": "0.2.0",
+        "tarball_url": "https://github.com/TiagoJMartins/tesserae-widget-signals/releases/download/v0.2.0/signals-0.2.0.tar.gz",
+        "sha256": "32385c21983037774124657e0d63e998a453fba90bd58961039d7b9f46f7f684"
       },
       "source": "https://github.com/TiagoJMartins/tesserae-widget-signals"
+    },
+    {
+      "id": "http_json",
+      "name": "HTTP JSON",
+      "description": "Point a cell at any JSON endpoint and map dot-paths to fields: a hero value, blocks, a list, or a list projected from an array. Per-field formats, remapping and scaling. Keeps the last good response, so an offline source reads as stale. Reaches LAN and tailnet hosts.",
+      "icon": "ph-brackets-curly",
+      "author": {
+        "name": "Tiago Martins",
+        "github": "TiagoJMartins"
+      },
+      "tags": [
+        "utility"
+      ],
+      "kind": "widget",
+      "tesserae_compat": "1.x",
+      "screenshot_sizes": [
+        "lg",
+        "md",
+        "sm",
+        "xs"
+      ],
+      "extra_screenshot_count": 4,
+      "folders": [
+        "http_json"
+      ],
+      "release": {
+        "version": "0.1.0",
+        "tarball_url": "https://github.com/TiagoJMartins/tesserae-widget-http-json/releases/download/v0.1.0/http-json-0.1.0.tar.gz",
+        "sha256": "f148230769683f803a0ce850b21af84c9042c0f1593c74c73dfaf85d425debcf"
+      },
+      "source": "https://github.com/TiagoJMartins/tesserae-widget-http-json"
     }
   ]
 }
