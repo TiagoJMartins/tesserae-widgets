@@ -26,10 +26,13 @@ one URL, so a server browses one catalog at a time.
 
 ```
 widgets.json                    the index Tesserae fetches
-schema/marketplace.schema.json  copy of the host's index schema (CI validates against it)
+schema/marketplace.schema.json  copy of the host's index schema (validate.py checks against it)
 screenshots/<id>/lg.png         per-widget thumbnails (lg required, xs/sm/md optional)
-.github/workflows/validate.yml  CI: schema + sha256 + screenshot checks
+scripts/validate.py             `mise run validate`: schema + sha256 + screenshot + folder layout
 ```
+
+Validation is a local task, not CI: there is no GitHub Actions workflow here, so
+`mise run validate` before a push is what keeps a bad pin out of Browse.
 
 ## Adding an entry
 
@@ -47,5 +50,5 @@ be published on its own.
 ## Keeping the schema in sync
 
 `schema/marketplace.schema.json` is a copy of the host's. When Tesserae bumps
-its index schema, copy the new file in — CI validates against the local copy,
-so drift surfaces here before a user hits it on Browse.
+its index schema, copy the new file in — `mise run validate` checks against the
+local copy, so drift surfaces here before a user hits it on Browse.
