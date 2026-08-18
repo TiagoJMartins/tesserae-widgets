@@ -58,9 +58,9 @@
         "http_json"
       ],
       "release": {
-        "version": "0.2.0",
-        "tarball_url": "https://github.com/TiagoJMartins/tesserae-widget-http-json/releases/download/v0.2.0/http-json-0.2.0.tar.gz",
-        "sha256": "85749343bf4c75bbd480efa88ea0e627ee2f0efe8f63832fc6f4583364723764"
+        "version": "0.2.1",
+        "tarball_url": "https://github.com/TiagoJMartins/tesserae-widget-http-json/releases/download/v0.2.1/http-json-0.2.1.tar.gz",
+        "sha256": "b96648b1c21acc6a148bf200e440a7113979143df58aa333ed2f58cdaa71b4fb"
       },
       "source": "https://github.com/TiagoJMartins/tesserae-widget-http-json"
     }
